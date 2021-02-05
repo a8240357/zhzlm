@@ -1,0 +1,53 @@
+{include file="public/header" /}
+
+<link href="__TEMPLATE__laozhang/static/index/css/theme_list.css" rel="stylesheet" type="text/css">
+
+<div class="newbreadcrumbs">
+    <span itemprop="itemListElement"></span>
+    <ul>
+        <li class="{empty name='cate_id'}active{/empty}" style="margin-left: 5%;">
+            <a href='/index/theme'>全部</a>
+        </li>
+        {volist name="lanmu" id="vo"}
+        <li class="{eq name='cate_id' value='$vo.id'}active{/eq}">
+            <a href="/index/theme/{$vo['id']}">{$vo['name']}</a>
+        </li>
+        {/volist}
+    </ul>
+</div>
+<!-- 面包屑导航 结束 -->
+
+
+<!-- 文章 开始 -->
+<div class="main">
+    <div class="page_left" style="width:100%">
+
+        <div class="wrapper grid" style='text-align: center;'>
+            {volist name="data" id="vo"}
+            <div class='med'>
+                <div class='img' alt="{$vo['name']}" title="{$vo['name']}">
+                    <a href="/index/theme_art_list/{$vo['id']}"><img src="{$vo['image_url'] ? $vo['image_url'] : '__TEMPLATE__laozhang/static/images/laozhang_avatar.png'}" alt=""></a>
+                    <div class='zhe'>
+                        {$vo['art_num']}篇文章
+                    </div>
+                </div>
+                <a href="/index/theme_art_list/{$vo['id']}">
+                    <p alt="{$vo['name']}" title="{$vo['name']}">{$vo['name']|mb_substr=0,10}</p>
+                </a>
+            </div>
+            {/volist}
+        </div>
+
+        <div id="page">{$page}</div>
+    </div>
+    <div class="page_right">
+
+        <!-- 修改过后的推荐主题和关注我们干掉 -->
+
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- 文章 结束 -->
+<script id="cy_cmt_num" src="//changyan.sohu.com/upload/plugins/plugins.list.count.js?clientId={$settings['changyan_app_id']}"></script>
+<!-- 畅言评论数获取js -->
+{include file="public/footer" /}

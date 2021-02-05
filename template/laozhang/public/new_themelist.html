@@ -1,0 +1,28 @@
+<!-- 推荐主题 -->
+
+<div class="con_r fr">
+    <div class="title_box clearfix">
+        <div class="title fl">
+            <img src="__TEMPLATE__laozhang/static/pc/images/icon_1.png" class="tit_icon"> 推荐主题
+        </div>
+        <a href="/index/theme" class="more fr">更多></a>
+    </div>
+    <div class="conr_list">
+        {volist name="recommend_cates" id="vo"} {if $vo}
+        <a href="/index/theme_art_list/{$vo['id']}" class="item clearfix">
+            <div class="img_over fl">
+                <img src="{$vo['image_url'] ? $vo['image_url'] : '__TEMPLATE__laozhang/static/images/laozhang_avatar.png'}" class="img img_hover" alt="{$vo['name']}" title="{$vo['name']}" style="max-height: 87.54px;">
+            </div>
+            <div class="info">
+                <div class="tit ellipsis">{$vo['name']|mb_substr=0,10}</div>
+                <div class="pro">{$vo['art_num']}篇文章</div>
+            </div>
+        </a>
+        {/if} {/volist}
+    </div>
+
+    <div class="code_box">
+        <img src="{$settings.qr_code}" class="code">
+        <p>关注我们</p>
+    </div>
+</div>

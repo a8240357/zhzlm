@@ -1,0 +1,43 @@
+{include file="public/pc_header" /}
+
+<div class="idx_con detail_art clearfix">
+    <div class="auto">
+        <div class="con_l fl">
+            <div class="title" style="width: 100%;text-align: center;">{$data['title']}</div>
+            <div class="time">{$data['create_time']|format_datetime}</div>
+            <div class="text">
+                {$data["content"]}
+                <div class="line"></div>
+                <!-- <img src="images/detail_1.jpg" class="img text_img"> -->
+            </div>
+        </div>
+
+        <div class="con_r fr">
+            <div class="title_box clearfix">
+                <div class="title fl">
+                    <img src="__TEMPLATE__laozhang/static/pc/images/icon_1.png" class="tit_icon"> 相关推荐
+                </div>
+                <a href="/index/theme" class="more fr">更多></a>
+            </div>
+            <div class="conr_list">
+                {volist name="recommend_cates" id="vo"} {if $vo}
+                <a href="/index/theme_art_list/{$vo['id']}" class="item">
+                    <div class="tit ellipsis">{$vo['name']|mb_substr=0,10}</div>
+                    <div class="pro">{$vo['create_time']|format_datetime}&emsp;&emsp;[{$vo['art_num']}篇文章]</div>
+                </a>
+                {/if} {/volist}
+            </div>
+
+            <div class="code_box">
+                <img src="{$settings.qr_code}" class="code">
+                <p>关注我们</p>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="public/pc_footer" /}
+</body>
+<script>
+</script>
+
+</html>

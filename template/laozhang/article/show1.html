@@ -1,0 +1,426 @@
+{include file="public/header" /} {include file="public/breadcrumb" /}
+<style>
+    .detail_container #article {
+        padding: 15px 20px;
+        /* text-indent: 2em; */
+        font-size: 14px;
+        line-height: 26px;
+        word-wrap: break-word;
+    }
+</style>
+<!-- 文章 开始 -->
+<div class="main">
+    <div class="page_left">
+        <div class="detail_container trans_3">
+            <h1>{$data['title']}</h1>
+            <div class="date_hits">
+                <!-- <span><i>发布时间：</i>{$data['create_time']|format_datetime}</span><span><i>热度：</i> {$data['hits']} ℃</span><span><i>评论数：</i> <a href="#SOHUCS" id="changyan_count_unit"></a></span> -->
+            </div>
+            <div id="article"></div>
+            <!-- <div class='page'></div> -->
+            {notempty name="data['keywords']"}
+            <div class="keywords">
+                <p>{$data['keywords']}</p>
+            </div>
+            {/notempty}
+            <div class="prev_next">
+                <div class="prev">上一篇：<a href="{$data['prev']['url']}">{$data['prev']['title']}</a></div>
+                <div class="next">下一篇：<a href="{$data['next']['url']}">{$data['next']['title']}</a></div>
+                <div class="clear"></div>
+            </div>
+            <div class="commont_containr">
+                <!--【畅言】表情评价-->
+                <div id="cyEmoji" role="cylabs" data-use="emoji" sid="{$data['category_id']}{$data['id']}"></div>
+                <!--【畅言】PC和WAP自适应版-->
+                <div id="SOHUCS" sid="{$data['category_id']}{$data['id']}"></div>
+            </div>
+
+        </div>
+    </div>
+    <div class="page_right">
+        <!-- 修改过后的推荐主题 -->
+        {include file="public/recommend_themelist" /}
+
+        <!-- <div class="second_categorys_container">
+			<h3>栏目导航</h3>
+			<ol class="seond_category trans_3">
+				{volist name="second_categorys" id="vo"}
+				<li {if $data['category_id']==$vo['id']}class="selected"{/if}><a href="{$vo['url']}" class="layui-btn layui-btn-primary trans_1">{$vo['name']}</a></li>
+				{/volist}
+			</ol>	
+		</div>
+		{notempty name="hot_list"}  
+		<div class="hot_list">
+			<h3>相关文章</h3>
+			<ol class="page_right_list trans_3">
+				{volist name="hot_list" id="vo"}
+				<li><a href="{$vo['url']}">{$vo['title']}</a><span class="hits"> {$vo['hits']} ℃ </span></li>
+				{/volist}
+			</ol>
+		</div>
+		{/notempty}
+		<div class="mobile_qrcode_container">
+			<h3>手机扫码访问</h3>
+			<div class="mobile_qrcode wechat_qrcode trans_3">
+				{include file="public/qrcode" /}
+			</div>
+		</div> -->
+
+    </div>
+    <div class="clear"></div>
+</div>
+<script type="text/javascript">
+    layui.use('code', function() { //加载code模块
+        layui.code({
+            title: '代码如下',
+            skin: 'notepad' //如果要默认风格，不用设定该key。
+                ,
+            about: false
+        });
+    });
+
+
+    //每页显示字数
+    PageSize = 250;
+    //分页模式
+    flag = 1; //1:根据字数自动分页 2:根据[NextPage]分页
+    //默认页
+    startpage = 1;
+    //导航显示样式 0:常规 1:直接 2:下拉
+    TopShowStyle = 2;
+    DownShowStyle = 0;
+    var currentSet, CutFlag, TotalByte, PageCount, key, tempText, tempPage;
+    key = "";
+    currentSet = 0;
+    var Text = '{$data["content"]}';
+    TotalByte = Text.length;
+    if (flag == 1) {
+        PageCount = Math.round(TotalByte / PageSize);
+        if (parseFloat("0." + TotalByte % PageSize) > 0) {
+            if (parseFloat("0." + TotalByte % PageSize) < 0.5) {
+                PageCount = PageCount + 1;
+            }
+        }
+        var PageNum = new Array(PageCount + 1);
+        var PageTitle = new Array(PageCount + 1);
+        PageNum[0] = 0;
+        PageTitle[0] = "";
+
+        var sDrv1, sDrv2, sDrv3, sDrv4, sFlag;
+        var sDrvL, sTemL;
+        var sTem1, sTem2, k;
+        sFlag = 0;
+
+        for (j = 1; j < PageCount + 1; j++) {
+            PageNum[j] = PageNum[j - 1] + PageSize;
+            PageTitle[j] = "";
+            //alert(j);
+            sDrv1 = "<br>";
+            sDrv2 = "<BR>";
+            sDrv3 = "<Br>";
+            sDrv4 = "<bR>";
+            sDrvL = sDrv1.length;
+            for (k = PageNum[j]; k <= TotalByte; k++) {
+                sTem1 = Text.substring(PageNum[j] - sDrvL, k);
+                sTemL = sTem1.length;
+                sTem2 = sTem1.substring(sTemL - sDrvL, sTemL)
+                if (sTem2 == sDrv1 || sTem2 == sDrv2 || sTem2 == sDrv3 || sTem2 == sDrv4) {
+                    sFlag = sFlag + 1;
+                    PageNum[j] = k;
+                    break;
+                }
+            }
+            if (PageNum[j] > TotalByte) {
+                break;
+            }
+        }
+        if (j < PageCount) {
+            PageNum.length = j;
+            PageCount = j
+        }
+        if (PageCount > 1 && sFlag > 1 && PageCount < sFlag) {
+            PageCount = sFlag + 1;
+        }
+    } else {
+        //手动分页
+        var j, sFlag, PageCount, sText;
+        var sTitleFlag;
+        var PageNum = new Array();
+        var PageTitle = new Array();
+        PageSize = 0;
+        j = 1;
+        PageNum[0] = -10;
+        PageTitle[0] = "";
+        sFlag = 0;
+        sText = Text;
+        do {
+            sText = Text.substring(PageNum[j - 1] + 10, TotalByte);
+            sFlag = sText.indexOf("[NextPage");
+            if (sText.substring(sFlag + 9, sFlag + 10) == "=") {
+                sTitleFlag = sText.indexOf("]", sFlag);
+                PageTitle[j] = sText.substring(sFlag + 10, sTitleFlag);
+            } else {
+                PageTitle[j] = "";
+            }
+            if (sFlag > 0) {
+                PageNum[j] = sFlag + PageNum[j - 1] + 10;
+            } else {
+                PageNum[j] = TotalByte;
+            }
+            j += 1;
+        }
+        while (PageNum[j - 1] < TotalByte);
+        PageCount = j - 1;
+    }
+
+    function text_pagination(Page) {
+        var Output, Byte;
+        Output = "";
+        if (Page == null) {
+            Page = 1;
+        }
+        //头部功能导航条
+        Output = Output + "<div style=text-align:right;>";
+        //页码显示方式一
+        //第x页：分页标题
+        if (Page == 0 || PageCount == 0) {
+            Output = Output + "当前是：<font color=#FFFF00>全文显示</font>";
+        } else {
+            if (TotalByte > PageSize) {
+                Byte = PageNum[Page] - PageNum[Page - 1]
+            } else {
+                Byte = TotalByte
+            };
+            Output = Output + "第 <font color=#FFFF00>" + Page + "</font> 页";
+            if (PageTitle[Page] != "") {
+                Output = Output + "：<font color=800000>" + PageTitle[Page] + "</font>";
+            }
+        }
+        Output = Output + "</div>";
+        //显示正文
+        if (Page == 0) {
+            //不分页
+            tempText = Text;
+        } else {
+            //分页
+            if (flag == 1)
+            //自动分页
+            {
+                tempText = Text.substring(PageNum[Page - 1], PageNum[Page]);
+            } else {
+                //手动分页
+                if (PageTitle[Page - 1].length == 0) {
+                    tempText = Text.substring(PageNum[Page - 1] + 10, PageNum[Page]);
+                } else {
+                    tempText = Text.substring(PageNum[Page - 1] + 11 + PageTitle[Page - 1].length, PageNum[Page]);
+                }
+            }
+        }
+
+        //布置内容
+        //  Output=Output+"<div align=center>";
+        //  Output=Output+Article_PageNav(TopShowStyle,Page);
+        //  Output=Output+"</div>";
+
+        Output = Output + "<div id=world>";
+        Output = Output + tempText;
+        Output = Output + "</div>";
+        Output = Output + "<br>";
+        Output = Output + "<div align=center>";
+        Output = Output + Article_PageNav(DownShowStyle, Page);
+        Output = Output + "</div>";
+
+        article.innerHTML = Output;
+        if (Page > 1) {
+            document.location.href = '#top';
+        }
+    }
+
+    function Article_PageNav(ShowStyle, Page) {
+        //分页码显示函数
+        //参数为调用样式，0=简单样式，1=标准样式
+        var temp = "";
+        if (ShowStyle == 0)
+        //简单样式
+        {
+            tempPage = Page;
+            if (TotalByte > PageSize) {
+                if (Page - 4 <= 1) {
+                    temp = temp + "<font face=webdings color=#999999>9</font>";
+                    if (Page <= 1) {
+                        temp = temp + "<font face=webdings color=#999999>7</font>";
+                    } else {
+                        temp = temp + "<a href=javascript:text_pagination(" + (Page - 1) + ")><font face=webdings>7</font></a>";
+                    }
+                    if (PageCount > 10) {
+                        for (i = 1; i < 8; i++) {
+                            if (i == Page) {
+                                temp = temp + "<font color=red>" + i + "</font> ";
+                            } else {
+                                temp = temp + "<a href=javascript:text_pagination(" + i + ") >" + i + "</a>" + " ";
+                            }
+                        }
+                        temp = temp + " ...";
+                    } else {
+                        for (i = 1; i < PageCount + 1; i++) {
+                            if (i == Page) {
+                                temp = temp + "<font color=red>" + i + "</font> ";
+                            } else {
+                                temp = temp + "<a href=javascript:text_pagination(" + i + ") >" + i + "</a>" + " ";
+                            }
+                        }
+                    }
+                    if (Page == PageCount) {
+                        temp = temp + "<font face=webdings color=#999999>8</font>";
+                    } else {
+                        temp = temp + "<a href=javascript:text_pagination(" + (Page + 1) + ")><font face=webdings>8</font></a>";
+                    }
+                    if (PageCount < 10) {
+                        temp = temp + "<font face=webdings color=#999999>:</font>";
+                    } else {
+                        temp = temp + "<a href=javascript:text_pagination(" + PageCount + ")><font face=webdings>:</font></a>";
+                    }
+                } else if (Page + 4 <= PageCount) {
+                    temp = temp + "<a href=javascript:text_pagination(1)><font face=webdings>9</font></a>";
+                    temp = temp + "<a href=javascript:text_pagination(" + (Page - 1) + ")><font face=webdings>7</font></a>";
+                    if (PageCount > 10) {
+                        temp = temp + "..";
+                        for (i = Page - 4; i < Page + 4; i++) {
+                            if (i == Page) {
+                                temp = temp + "<font color=red>" + i + "</font> ";
+                            } else {
+                                temp = temp + "<a href=javascript:text_pagination(" + i + ") >" + i + "</a>" + " ";
+                            }
+                        }
+                        temp = temp + " ..";
+                    } else {
+                        for (i = 1; i < PageCount + 1; i++) {
+                            if (i == Page) {
+                                temp = temp + "<font color=red>" + i + "</font> ";
+                            } else {
+                                temp = temp + "<a href=javascript:text_pagination(" + i + ") >" + i + "</a>" + " ";
+                            }
+                        }
+                    }
+
+                    if (Page == PageCount) {
+                        temp = temp + "<font face=webdings color=#999999>8</font>";
+                    } else {
+                        temp = temp + "<a href=javascript:text_pagination(" + (Page + 1) + ")><font face=webdings>8</font></a>";
+                    }
+                    temp = temp + "<a href=javascript:text_pagination(" + PageCount + ")><font face=webdings>:</font></a>";
+                } else {
+                    temp = temp + "<a href=javascript:text_pagination(1)><font face=webdings>9</font></a>";
+                    temp = temp + "<a href=javascript:text_pagination(" + (Page - 1) + ")><font face=webdings>7</font></a>";
+                    temp = temp + ".."
+                    for (i = Page - 2; i < PageCount + 1; i++) {
+                        if (i == Page) {
+                            temp = temp + "<font color=red>" + i + "</font> ";
+                        } else {
+                            temp = temp + "<a href=javascript:text_pagination(" + i + ") >" + i + "</a>" + " ";
+                        }
+                    }
+                    if (Page == PageCount) {
+                        temp = temp + "<font face=webdings color=#999999>8</font>";
+                    } else {
+                        temp = temp + "<a href=javascript:text_pagination(" + (Page + 1) + ")><font face=webdings>8</font></a>";
+                    }
+                    temp = temp + "<font face=webdings color=#999999>:</font>";
+                }
+            } else {
+                //    temp=temp+"<font color=red>1</font> ";
+            }
+            //   temp=temp+" <a href=javascript:text_pagination(0)>显示全部</a>"
+        } else if (ShowStyle == 1)
+        //标准样式
+        {
+            if (TotalByte > PageSize) {
+                if (Page != 0) {
+                    if (Page != 1) {
+                        temp = temp + "<a href='#top' onclick=javascript:text_pagination(" + (Page - 1) + ")><font color=3366cc>[上一页]</font></a>&nbsp;&nbsp;";
+                    }
+                }
+            }
+            for (i = 1; i < PageCount + 1; i++) {
+                if (Page == i) {
+                    temp = temp + "<font color=800000>[" + i + "]</font>&nbsp;&nbsp;";
+                } else {
+                    temp = temp + "<a href='#top' onclick=javascript:text_pagination(" + i + ")><font color=3366cc>[" + i + "]</font></a>&nbsp;&nbsp;";
+                }
+            }
+            temp = temp + "<a name='foot'></a>";
+            if (TotalByte > PageSize) {
+                if (Page != 0) {
+                    if (Page != PageCount) {
+                        temp = temp + "<a href='#top' onclick=javascript:text_pagination(" + (Page + 1) + ")><font color=3366cc>[下一页]</font></a>";
+                    }
+                }
+            }
+            temp = temp + " <a href=javascript:text_pagination(0)><font color=3366cc>显示全部</font></a>"
+        } else if (ShowStyle == 2)
+        //下拉菜单样式
+        {
+            temp = temp + '<select onchange="text_pagination(this.value)">'
+            for (i = 1; i < PageCount + 1; i++) {
+                if (Page == i) {
+                    temp = temp + "<option value='" + i + "' selected style='color:red'>第 " + i + " 页"
+
+                } else {
+                    temp = temp + "<option value='" + i + "'>第 " + i + " 页";
+                }
+                if (PageTitle[i].length != 0) {
+                    temp = temp + '：' + PageTitle[i];
+                }
+                temp = temp + "</option>";
+            }
+            temp = temp + "</select>";
+        }
+        return (temp);
+    }
+    //默认页
+    text_pagination(startpage);
+</script>
+<!-- 畅言js -->
+<script type="text/javascript">
+    (function() {
+        var appid = '{$settings["changyan_app_id"]}'; // cyuuugmnC
+        var conf = '{$settings["changyan_app_key"]}'; // prod_19d5c56e94a5fca1ec0d0dbdbba025a3
+        var width = window.innerWidth || document.documentElement.clientWidth;
+        if (width < 960) {
+            window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="//changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>');
+        } else {
+            var loadJs = function(d, a) {
+                var c = document.getElementsByTagName("head")[0] || document.head || document.documentElement;
+                var b = document.createElement("script");
+                b.setAttribute("type", "text/javascript");
+                b.setAttribute("charset", "UTF-8");
+                b.setAttribute("src", d);
+                if (typeof a === "function") {
+                    if (window.attachEvent) {
+                        b.onreadystatechange = function() {
+                            var e = b.readyState;
+                            if (e === "loaded" || e === "complete") {
+                                b.onreadystatechange = null;
+                                a()
+                            }
+                        }
+                    } else {
+                        b.onload = a
+                    }
+                }
+                c.appendChild(b)
+            };
+            loadJs("//changyan.sohu.com/upload/changyan.js", function() {
+                window.changyan.api.config({
+                    appid: appid,
+                    conf: conf
+                })
+            });
+        }
+    })();
+</script>
+<script type="text/javascript" charset="utf-8" src="//changyan.itc.cn/js/lib/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="//changyan.sohu.com/js/changyan.labs.https.js?appid={$settings['changyan_app_id']}"></script>
+<script type="text/javascript" src="//assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+<!-- 文章 结束 -->
+{include file="public/footer" /}

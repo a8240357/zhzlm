@@ -1,0 +1,186 @@
+.newbreadcrumbs {
+    background: #fff;
+    margin-bottom: 15px;
+    padding: 15px 25px;
+    border-top: 2px solid #748594;
+    -webkit-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);
+    -moz-box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);
+    box-shadow: 0 2px 5px 0 rgba(146, 146, 146, .1);
+}
+
+.newbreadcrumbs ul li {
+    display: inline-block;
+    margin-right: 3%;
+}
+
+.newbreadcrumbs .active {
+    font-size: 20px;
+    color: #666;
+    font-weight: 600;
+}
+
+
+/*-- 列表样式 --*/
+
+
+/*小屏幕*/
+
+@media screen and (max-width: 768px) {
+    .med {
+        float: left;
+        width: 45%;
+        margin: 2.5%;
+    }
+    .med .img {
+        width: 100%;
+        background: #ccc;
+        padding-bottom: 5%;
+        padding-top: 5%;
+        position: relative;
+    }
+    .med .img .zhe {
+        width: 100%;
+        position: absolute;
+        background-color: #fff;
+        filter: alpha(opacity=80);
+        opacity: 0.7;
+        z-index: 99;
+        height: 30px;
+        line-height: 30px;
+        color: #989a9b;
+        bottom: 0px;
+        font-size: 13px;
+    }
+    .med .img img {
+        width: 90%;
+    }
+    .med p {
+        width: 100%;
+        text-align: left;
+        margin-top: 1.5%;
+        margin-bottom: 0%;
+        font-weight: 550;
+    }
+}
+
+
+/*平板*/
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+    .med {
+        width: 30%;
+        margin: 1.65%;
+    }
+    .med .img {
+        width: 100%;
+        background: #ccc;
+        padding-bottom: 5%;
+        padding-top: 5%;
+        position: relative;
+    }
+    .med .img .zhe {
+        width: 100%;
+        position: absolute;
+        background-color: #fff;
+        filter: alpha(opacity=80);
+        opacity: 0.7;
+        z-index: 99;
+        height: 30px;
+        line-height: 30px;
+        color: #989a9b;
+        bottom: 0px;
+        font-size: 13px;
+    }
+    .med .img img {
+        width: 90%;
+    }
+    .med p {
+        width: 100%;
+        text-align: left;
+        margin-top: 1.5%;
+        margin-bottom: 0%;
+        font-weight: 550;
+    }
+}
+
+
+/*中等屏幕*/
+
+@media screen and (min-width: 992px) and (max-width: 1200px) {
+    .med {
+        width: 23%;
+        float: left;
+        margin: 1%;
+    }
+    .med .img {
+        width: 100%;
+        background: #ccc;
+        padding-bottom: 5%;
+        padding-top: 5%;
+        position: relative;
+    }
+    .med .img .zhe {
+        width: 100%;
+        position: absolute;
+        background-color: #fff;
+        filter: alpha(opacity=80);
+        opacity: 0.7;
+        z-index: 99;
+        height: 30px;
+        line-height: 30px;
+        color: #989a9b;
+        bottom: 0px;
+        font-size: 15px;
+    }
+    .med .img img {
+        width: 90%;
+    }
+    .med p {
+        width: 100%;
+        text-align: left;
+        margin-top: 1.5%;
+        margin-bottom: 0%;
+        font-weight: 550;
+    }
+}
+
+
+/*大屏幕，或者宽屏*/
+
+@media screen and (min-width: 1200px) {
+    .med {
+        width: 23%;
+        float: left;
+        margin: 1%;
+    }
+    .med .img {
+        width: 100%;
+        background: #ccc;
+        padding-bottom: 5%;
+        padding-top: 5%;
+        position: relative;
+    }
+    .med .img .zhe {
+        width: 100%;
+        position: absolute;
+        background-color: #fff;
+        filter: alpha(opacity=80);
+        opacity: 0.7;
+        z-index: 99;
+        height: 30px;
+        line-height: 30px;
+        color: #989a9b;
+        bottom: 0px;
+        font-size: 18px;
+    }
+    .med .img img {
+        width: 90%;
+    }
+    .med p {
+        width: 100%;
+        text-align: left;
+        margin-top: 1.5%;
+        margin-bottom: 0%;
+        font-weight: 550;
+    }
+}

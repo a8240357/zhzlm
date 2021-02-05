@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{$seo['title']}</title>
+    <meta name="keywords" content="{$seo['keywords']}">
+    <meta name="description" content="{$seo['description']}">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"> {$settings['head_html']}
+    <link rel="stylesheet" href="__TEMPLATE__laozhang/static/mobile/css/swiper.min.css">
+    <link rel="stylesheet" href="__TEMPLATE__laozhang/static/mobile/css/style.css">
+</head>
+
+<style>
+    .grey_bg .head .menu {
+        display: none;
+    }
+</style>
+
+<body class="grey_bg">
+    <div class="head">
+        <a href="/"><img src="__TEMPLATE__laozhang/static/mobile/images/logo.png" class="logo fl"></a>
+        <img src="__TEMPLATE__laozhang/static/mobile/images/tit.png" class="tit">
+        <img src="__TEMPLATE__laozhang/static/mobile/images/nav.png" class="nav fr">
+
+        <div class="menu">
+            <div class="mask"></div>
+            <div class="menu_box">
+                <a href="/" class="item item1 cur">首页</a> {volist name="categorys[0][0]" id="vo"} {if condition="$categorys[$vo]['is_menu'] == 1"}
+                <a href="{$categorys[$vo]['url']}" class="item item{$categorys[$vo]['item']}">{$categorys[$vo]['name']}</a> {/if} {/volist}
+                <a href="/index/theme" class="item item1">更多主题</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail_main mt150">
+        <div class="title_box">
+            <h6 class="tit" style="width:100%;text-align: center;">{$data['title']}</h6>
+            <div class="pre clearfix">
+                <div class="pre_tit fl">{$data['author'] ? $data['author'] : '匿名'}</div>
+                <div class="time fr">{$data['create_time']|format_datetime}</div>
+            </div>
+        </div>
+        <div class="line"></div>
+        <div class="con">
+            {$data["content"]}
+            <!-- <img src="__TEMPLATE__laozhang/static/mobile/images/detail_img.jpg" class="img">
+            <p class="tit_t">正文 图文编辑</p> -->
+        </div>
+    </div>
+
+    {include file="public/mobile_footer" /}
+</body>
+<script src="__TEMPLATE__laozhang/static/mobile/js/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    $(".nav").click(function() {
+        $(".menu").show();
+    });
+    $(".mask").click(function() {
+        $(".menu").hide();
+    });
+</script>
+
+</html>

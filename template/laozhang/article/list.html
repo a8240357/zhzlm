@@ -1,0 +1,61 @@
+{include file="public/pc_header" /}
+
+<div class="idx_con clearfix">
+    <div class="auto">
+        <div class="con_l fl">
+            <div class="banner">
+                <div class="swiper-container">
+                    {if !empty($banners)}
+                    <div class="swiper-wrapper">
+                        {volist name="banners" id="vo"}
+                        <!-- <a href="{$vo['url'] ? $vo['url'] : '/'}"> -->
+                        <div class="swiper-slide"><img src="{$vo['image_url'] ? $vo['image_url'] : '__TEMPLATE__laozhang/static/images/banner1.jpg'}" alt="{$vo['title']}" title="{$vo['title']}" class="banner img" style="max-height: 250px;" onclick="javacsript:window.open('{$vo['url']}')"></div>
+                        <!-- </a> -->
+                        {/volist}
+                    </div>
+                    {/if}
+                    <!-- Add Pagination -->
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+
+            <div class="box">
+                {volist name="recommend_list" id="vo"}
+                <a href="{$vo['url']}" class="item clearfix">
+                    {notempty name='vo[image_url]'}
+                    <div class="img_over fl">
+                        <img src="{$vo['image_url']}" class="img img_hover" style="max-height: 147.53px;">
+                    </div>
+                    {/notempty}
+                    <div class="info">
+                        <h6 class="title ellipsis">{$vo['title']}</h6>
+                        <div class="txt">
+                                <?php echo strlen($vo['description'])>30 ? mb_substr($vo['description'], 0 ,50) . '...' : $vo['description'] ?>
+                        </div>
+                        <div class="pro">{$vo['author'] ? $vo['author'] : '匿名'}</div>
+                    </div>
+                </a> {/volist}
+
+            </div>
+        </div>
+        <!-- 修改过后的推荐主题 -->
+        {include file="public/new_themelist" /}
+
+    </div>
+</div>
+{include file="public/pc_footer" /}
+</body>
+<script src="__TEMPLATE__laozhang/static/pc/js/swiper.min.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var swiper = new Swiper('.swiper-container', {
+        autoplay: {
+            delay: 2500,
+            disableOnInteraction: false,
+        },
+        pagination: {
+            el: '.swiper-pagination',
+        },
+    });
+</script>
+
+</html>

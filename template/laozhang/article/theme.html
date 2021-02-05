@@ -1,0 +1,29 @@
+{include file="public/pc_header" /}
+
+<div class="zt_listmain">
+    <div class="auto">
+        <div class="tab_box clearfix">
+            <a href="/index/theme" class="tab_i {empty name='cate_id'}cur{/empty}">全部</a> {volist name="lanmu" id="vo"}
+            <a href="/index/theme/{$vo['id']}" class="tab_i {eq name='cate_id' value='$vo.id'}cur{/eq}">{$vo['name']}</a> {/volist}
+        </div>
+
+        <div class="box clearfix">
+            {volist name="data" id="vo"}
+            <a href="/index/theme_art_list/{$vo['id']}" class="item">
+                <div class="img_over" alt="{$vo['name']}" title="{$vo['name']}">
+                    <img src="{$vo['image_url'] ? $vo['image_url'] : '__TEMPLATE__laozhang/static/images/laozhang_avatar.png'}" class="img img_hover" style="max-height: 189.1px;">
+                </div>
+                <p class="txt" alt="{$vo['name']}" title="{$vo['name']}">{$vo['name']|mb_substr=0,10}[{$vo['art_num']}篇文章]</p>
+            </a>
+            {/volist}
+
+        </div>
+    </div>
+</div>
+
+{include file="public/pc_footer" /}
+</body>
+<script>
+</script>
+
+</html>
